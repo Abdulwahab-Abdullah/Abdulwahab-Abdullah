@@ -1,16 +1,21 @@
-## Hi there 👋
+# Abdulwahab Abdullah
 
-<!--
-**Abdulwahab-Abdullah/Abdulwahab-Abdullah** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.
+Full-Stack Web Developer based in Riyadh.
+Spring Boot · Angular · Vue 3 · Laravel · TypeScript
 
-Here are some ideas to get you started:
+## Projects
 
-- 🔭 I’m currently working on ...
-- 🌱 I’m currently learning ...
-- 👯 I’m looking to collaborate on ...
-- 🤔 I’m looking for help with ...
-- 💬 Ask me about ...
-- 📫 How to reach me: ...
-- 😄 Pronouns: ...
-- ⚡ Fun fact: ...
--->
+**Muscle Hub** — Fitness management platform
+Vue 3, Pinia, Laravel 11, MySQL, Gemini AI, JWT, RBAC, RTL/i18n
+
+**Werd** — SaaS for Quran circle management
+Angular 21, Spring Boot microservices, PostgreSQL, Docker, Spring Cloud
+
+**Khabab Academy** — Landing page with full SEO optimization
+HTML, CSS, JavaScript, JSON-LD structured data
+
+## Currently learning
+Deepening Spring Boot microservices and cloud-native patterns
+
+## Contact
+abdulwahabyahya1@gmail.com
