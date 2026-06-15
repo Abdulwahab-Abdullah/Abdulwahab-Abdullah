@@ -309,6 +309,27 @@ body[dir="rtl"] .prow .pnum{text-align:right;}
 /* Contact: preferred tag push to visual end */
 body[dir="rtl"] .pref-tag{margin-inline-start:0;margin-inline-end:auto;}
 
+/* ─── DIAMOND CURSOR ────────────────────────────── */
+body{cursor:none;}
+#c-dot{
+  position:fixed;width:11px;height:11px;
+  background:var(--gold);
+  box-shadow:0 0 10px rgba(200,168,75,.8),0 0 24px rgba(200,168,75,.35);
+  transform:translate(-50%,-50%) rotate(45deg);
+  pointer-events:none;z-index:9999;
+  transition:width .18s cubic-bezier(.2,.7,.2,1),height .18s cubic-bezier(.2,.7,.2,1),box-shadow .18s;
+  border-radius:1px;
+}
+#c-dot.big{width:18px;height:18px;box-shadow:0 0 18px rgba(200,168,75,1),0 0 40px rgba(200,168,75,.4);}
+.c-tr{
+  position:fixed;
+  background:var(--gold);
+  pointer-events:none;z-index:9998;
+  transform:translate(-50%,-50%) rotate(45deg);
+  border-radius:1px;
+  will-change:left,top,opacity;
+}
+
 /* ─── RESPONSIVE ─────────────────────────────────── */
 @media(max-width:900px){
   .skills{grid-template-columns:1fr 1fr;}
@@ -323,6 +344,7 @@ body[dir="rtl"] .pref-tag{margin-inline-start:0;margin-inline-end:auto;}
 </head>
 <body dir="ltr">
 
+<div id="c-dot"></div>
 <div id="progress"></div>
 <canvas id="codeCanvas"></canvas>
 <div class="bg-grid"></div>
@@ -615,6 +637,48 @@ window.addEventListener('scroll', () => {
   const pct = (h.scrollTop / (h.scrollHeight - h.clientHeight)) * 100;
   progress.style.width = pct + '%';
 }, { passive: true });
+
+// ── Diamond cursor + comet trail ──
+(function(){
+  const dot = document.getElementById('c-dot');
+  const TRAIL = 9;
+  const trs = Array.from({length:TRAIL}, () => {
+    const el = document.createElement('div');
+    el.className = 'c-tr';
+    document.body.appendChild(el);
+    return el;
+  });
+
+  let mx = window.innerWidth/2, my = window.innerHeight/2;
+  const pos = Array.from({length:TRAIL+1}, () => ({x:mx, y:my}));
+
+  document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; }, {passive:true});
+
+  document.querySelectorAll('a,button').forEach(el => {
+    el.addEventListener('mouseenter', () => dot.classList.add('big'));
+    el.addEventListener('mouseleave', () => dot.classList.remove('big'));
+  });
+
+  (function loop(){
+    pos[0].x = mx; pos[0].y = my;
+    for(let i=1; i<=TRAIL; i++){
+      pos[i].x += (pos[i-1].x - pos[i].x) * 0.26;
+      pos[i].y += (pos[i-1].y - pos[i].y) * 0.26;
+    }
+    dot.style.left = pos[0].x + 'px';
+    dot.style.top  = pos[0].y + 'px';
+    trs.forEach((tr, i) => {
+      const frac = (i+1) / (TRAIL+1);
+      const size = Math.max(1, Math.round(9 * (1 - frac * 0.82)));
+      tr.style.left    = pos[i+1].x + 'px';
+      tr.style.top     = pos[i+1].y + 'px';
+      tr.style.width   = size + 'px';
+      tr.style.height  = size + 'px';
+      tr.style.opacity = ((1 - frac) * 0.52).toFixed(3);
+    });
+    requestAnimationFrame(loop);
+  })();
+})();
 
 // ── Background: real code snippets typewriter effect ──
 (function(){
