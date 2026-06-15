@@ -310,8 +310,8 @@ body[dir="rtl"] .prow .pnum{text-align:right;}
 body[dir="rtl"] .pref-tag{margin-inline-start:0;margin-inline-end:auto;}
 
 /* ─── DIAMOND CURSOR ────────────────────────────── */
-body{cursor:none;}
 #c-dot{
+  display:none;
   position:fixed;width:11px;height:11px;
   background:var(--gold);
   box-shadow:0 0 10px rgba(200,168,75,.8),0 0 24px rgba(200,168,75,.35);
@@ -322,6 +322,7 @@ body{cursor:none;}
 }
 #c-dot.big{width:18px;height:18px;box-shadow:0 0 18px rgba(200,168,75,1),0 0 40px rgba(200,168,75,.4);}
 .c-tr{
+  display:none;
   position:fixed;
   background:var(--gold);
   pointer-events:none;z-index:9998;
@@ -329,8 +330,10 @@ body{cursor:none;}
   border-radius:1px;
   will-change:left,top,opacity;
 }
-
-@media(pointer:coarse){body{cursor:auto;}#c-dot,.c-tr{display:none;}}
+@media(hover:hover) and (pointer:fine){
+  body{cursor:none;}
+  #c-dot,.c-tr{display:block;}
+}
 
 /* ─── RESPONSIVE ─────────────────────────────────── */
 @media(max-width:900px){
