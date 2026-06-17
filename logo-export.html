@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@700&display=swap" rel="stylesheet">
+<style>
+  body{margin:0;background:#111;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;gap:24px;}
+  canvas{border-radius:12px;}
+  button{font-family:monospace;font-size:14px;padding:12px 32px;background:linear-gradient(135deg,#22d3ee,#4f7cff,#a855f7);color:#fff;border:none;border-radius:8px;cursor:pointer;letter-spacing:1px;}
+  button:hover{opacity:.85;}
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<button onclick="dl()">⬇ تحميل PNG</button>
+
+<script>
+document.fonts.ready.then(() => {
+  const cv = document.getElementById('c');
+  const W = 1000, H = 1000;
+  cv.width = W; cv.height = H;
+  const cx = cv.getContext('2d');
+  draw(cx, W, H);
+});
+
+function draw(cx, W, H) {
+  const CYAN   = '#22d3ee';
+  const BLUE   = '#4f7cff';
+  const PURPLE = '#a855f7';
+
+  // Background
+  cx.fillStyle = '#070912';
+  cx.fillRect(0, 0, W, H);
+
+  // Subtle radial glow in center
+  const grd = cx.createRadialGradient(W/2, H/2, 0, W/2, H/2, 420);
+  grd.addColorStop(0, 'rgba(79,124,255,0.08)');
+  grd.addColorStop(1, 'rgba(0,0,0,0)');
+  cx.fillStyle = grd;
+  cx.fillRect(0, 0, W, H);
+
+  // Subtle grid lines
+  cx.strokeStyle = 'rgba(79,124,255,0.06)';
+  cx.lineWidth = 1;
+  for (let i = 0; i < W; i += 60) {
+    cx.beginPath(); cx.moveTo(i, 0); cx.lineTo(i, H); cx.stroke();
+    cx.beginPath(); cx.moveTo(0, i); cx.lineTo(W, i); cx.stroke();
+  }
+
+  // Badge centered, size 280
+  const bSize = 280, bX = (W-bSize)/2, bY = 180, bR = 44;
+
+  // Gradient border
+  const grad = cx.createLinearGradient(bX, bY, bX+bSize, bY+bSize);
+  grad.addColorStop(0, CYAN);
+  grad.addColorStop(0.5, BLUE);
+  grad.addColorStop(1, PURPLE);
+  cx.strokeStyle = grad;
+  cx.lineWidth = 7;
+  roundRect(cx, bX, bY, bSize, bSize, bR);
+  cx.stroke();
+
+  // Badge fill
+  cx.fillStyle = '#0d1020';
+  roundRect(cx, bX+4, bY+4, bSize-8, bSize-8, bR-3);
+  cx.fill();
+
+  const midX = bX + bSize/2;
+  const midY = bY + bSize/2;
+
+  // Left bracket <
+  cx.strokeStyle = CYAN;
+  cx.lineWidth = 12;
+  cx.lineCap = 'round';
+  cx.lineJoin = 'round';
+  cx.beginPath();
+  cx.moveTo(midX - 32, midY - 58);
+  cx.lineTo(midX - 72, midY);
+  cx.lineTo(midX - 32, midY + 58);
+  cx.stroke();
+
+  // Right bracket >
+  cx.strokeStyle = PURPLE;
+  cx.beginPath();
+  cx.moveTo(midX + 32, midY - 58);
+  cx.lineTo(midX + 72, midY);
+  cx.lineTo(midX + 32, midY + 58);
+  cx.stroke();
+
+  // Center dot
+  const dg = cx.createRadialGradient(midX, midY, 0, midX, midY, 16);
+  dg.addColorStop(0, '#6b9bff');
+  dg.addColorStop(1, BLUE);
+  cx.fillStyle = dg;
+  cx.beginPath();
+  cx.arc(midX, midY, 14, 0, Math.PI*2);
+  cx.fill();
+
+  // Glow ring
+  cx.strokeStyle = 'rgba(79,124,255,0.25)';
+  cx.lineWidth = 2;
+  cx.beginPath();
+  cx.arc(midX, midY, 28, 0, Math.PI*2);
+  cx.stroke();
+
+  // Text below badge
+  const ty = bY + bSize + 68;
+  cx.textBaseline = 'middle';
+  cx.textAlign = 'center';
+
+  // measure both parts to center together
+  cx.font = '700 80px Outfit, sans-serif';
+  const w1 = cx.measureText('Abdul').width;
+  const w2 = cx.measureText('wahab').width;
+  const totalW = w1 + w2;
+  const startX = W/2 - totalW/2;
+
+  cx.textAlign = 'left';
+
+  // "Abdul" in white
+  cx.fillStyle = '#eaf0ff';
+  cx.fillText('Abdul', startX, ty);
+
+  // "wahab" in gradient
+  const tg = cx.createLinearGradient(startX+w1, 0, startX+totalW, 0);
+  tg.addColorStop(0, CYAN);
+  tg.addColorStop(1, BLUE);
+  cx.fillStyle = tg;
+  cx.fillText('wahab', startX + w1, ty);
+
+  // Subtitle
+  cx.font = '400 26px Outfit, sans-serif';
+  cx.fillStyle = 'rgba(139,148,184,0.7)';
+  cx.textAlign = 'center';
+  cx.fillText('Full-Stack Developer', W/2, ty + 62);
+}
+
+function roundRect(ctx, x, y, w, h, r) {
+  ctx.beginPath();
+  ctx.moveTo(x+r, y);
+  ctx.lineTo(x+w-r, y);
+  ctx.quadraticCurveTo(x+w, y, x+w, y+r);
+  ctx.lineTo(x+w, y+h-r);
+  ctx.quadraticCurveTo(x+w, y+h, x+w-r, y+h);
+  ctx.lineTo(x+r, y+h);
+  ctx.quadraticCurveTo(x, y+h, x, y+h-r);
+  ctx.lineTo(x, y+r);
+  ctx.quadraticCurveTo(x, y, x+r, y);
+  ctx.closePath();
+}
+
+function dl() {
+  const cv = document.getElementById('c');
+  const a = document.createElement('a');
+  a.download = 'abdulwahab-logo.png';
+  a.href = cv.toDataURL('image/png');
+  a.click();
+}
+</script>
+</body>
+</html>
