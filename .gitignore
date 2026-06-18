@@ -1,0 +1,14 @@
+# Dependencies
+node_modules/
+package.json
+package-lock.json
+
+# Local-only tools & generated assets
+logo-export.html
+logo-tiktok.png
+abdulwahab-logo.png
+
+# OS / editor junk
+.DS_Store
+Thumbs.db
+*.log
