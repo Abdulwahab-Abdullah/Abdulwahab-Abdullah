@@ -14,6 +14,9 @@ Angular 21, Spring Boot microservices, PostgreSQL, Docker, Spring Cloud
 **Khabab Academy** — Landing page with full SEO optimization
 HTML, CSS, JavaScript, JSON-LD structured data
 
+**Chang Parts** — Bilingual auto-parts storefront, WhatsApp-first ordering flow
+Astro, Cloudflare Workers, JSON-LD, i18n / RTL, technical SEO
+
 ## Currently learning
 Deepening Spring Boot microservices and cloud-native patterns
 
